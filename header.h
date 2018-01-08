@@ -1,4 +1,3 @@
-
  #define NOM ((int)100)
  #define REP ((int)50)
 #define CARTE ((int)10)
@@ -26,10 +25,11 @@ extern "C" {
         int count;
         int done; //done = 0 : Continue
                   //done = 1 : Stop
-        int win; // 0 = init
-                 // 1 = gagné
-                 // 2 = perdu
-        
+        int win;  // 0 = init
+                  // 1 = gagné
+                  // 2 = perdu
+        int quit; // 0 = continue
+                  // 1 = STOP 
        
     }bjack;
     
@@ -46,14 +46,26 @@ void jack();
 int Alpha(int, bjack tab[]);  
 void Beta(int, bjack tab[],int);
 void winBlack(int); 
-int choixCarte(int);
- void bank();
+int choixCarte(int, bjack tab[]);
+ void bank(bjack tab[]);
+ 
+ int maxCard(int,bjack tab[]);
+void compare(int, int ,bjack tab[]);
+
+
  
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* HEADER_H */
+
+
+
+
+
+
+
 
 
 
