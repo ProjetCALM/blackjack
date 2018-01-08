@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "Header.h"
@@ -14,12 +13,9 @@
 
 
 
-/*
- 1;coeur  4:pique  2:carreau  3:trefle 34->37
- * ♠♡♢♣
- */
-int maxCard();
-void compare(int);
+
+void quitter(bjack tab []);
+
 
 int main(int argc, char** argv) {
     jack();
@@ -36,22 +32,23 @@ void jack(){
     
     int n=0;
     int tour;   // = nombre de carte tirées
-    int joueur; // = numero du joueur (1 => 5)
+    int joueur; // = numero du joueur 
     carte c;
     srand(time(0));
     //aleaCarte(tour,joueur);
-    n=intPlayer();
-    bjack tab[(PLAYER)];
     
+    bjack tab[(PLAYER)];
     for(i=0;i<PLAYER;i++){
         tab[i].count = 0;
         tab[i].done = 0;
-        tab[i].win = 0;
+        tab[i].win = 0 ;
         for(j=0;j<CARTE;j++){
             tab[i].jeu.card[j].blazon=0;
             tab[i].jeu.card[j].valeur=0;
     }
-    }
+    } 
+   
+    n=intPlayer();
     
     end = Alpha(n, tab);    
     
@@ -62,60 +59,19 @@ void jack(){
         Beta(n, tab,2); //tour 4
 }
     
-    bank();
-    max = maxCard();
+    bank(tab);
+    max = maxCard(n,tab);
     printf("\n\nLe plus gros score des joueurs est %d",max);
-    compare(max);
-}
-
-int maxCard(){
-    bjack tab[PLAYER];
-    int maximum=0  ;
-    int i=0;
-    for(i=1;i<(PLAYER-1);i++){
-        if(((tab[i].count)>maximum) && tab[i].count<=21){
-            maximum=tab[i].count;
-        }
-    }
-    return(maximum);
+    compare(max,n,tab);
 }
 
 
-void compare(int max){
-    bjack tab[PLAYER];
-    int i=0;
-    
-    if(max<tab[10].count){ //la banque gagne
-        printf("\nC'est la banque qui gagne");
-        for(i=0;i<(PLAYER-1);i++){
-         tab[i].win=2;   
-        }
+void quitter(bjack tab[PLAYER]){
+    int a=0;
+    printf("\npour quitter : 0");
+    scanf("%d",&a);
+    if(a == 0){
+        
     }
-    
-    else if(max>=tab[10].count){
-        for(i=0;i<(PLAYER-1);i++){
-            if(tab[i].count == max){
-                tab[i].win=1;
-            }
-            else{
-                tab[i].win=2;
-            }
-        }
-    }
-    
-    for(i=0;i<PLAYER-1;i++){
-        if(tab[i].win == 1){
-            printf("\nJoueur %d : gagnant",i);
-        }
-        else{
-            printf("\nJoueur %d : perdant",i);
-        }
-    }
-    if(tab[10].win == 1){
-            printf("\nBanque : gagnante");
-        }
-        else{
-            printf("\nBanque : perdante");
-        }
 }
 
