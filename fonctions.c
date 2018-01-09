@@ -2,20 +2,18 @@
 #include <stdlib.h>
 #include "Header.h"
 #include <time.h>
-#define NOM ((int)100)
-#define REP ((int)50)
+ #define NOM ((int)100)
+ #define REP ((int)50)
 #define PLAYER ((int)10)
 
 
-int intPlayer(){
+int intPlayer(bjack tab[]){
     int n=0;//nombre de joueur
     
     printf("Nombre de joueurs : ");
     scanf("%d",&n);
     
     int i,j=0;
-    bjack b;
-    bjack tab[PLAYER];
     int compteur[10];
     char nom[NOM]="\0";
     
@@ -27,19 +25,18 @@ int intPlayer(){
     }
     system("cls");
     
-    for(j=0;j<n;j++){
+    /*for(j=0;j<n;j++){
     printf("Joueur %d = %s\n",(j+1),tab[j].nom);
-    }
+    }*/
     return(n);
     }
 
-int aleaCarte(int t,int j){
+int aleaCarte(int t,int j,bjack tab[]){
     int blazon=0;
     int v=0;
     int n=0;
     bjack b;
     carte c;
-    bjack tab[PLAYER];
     int count=0;
     
     blazon=rand()%4;
@@ -115,20 +112,20 @@ int aleaCarte(int t,int j){
      
  }
 
- int Alpha(int n, bjack tab[(PLAYER)]){
+ int Alpha(int n, bjack tab[]){
      int i; // numéro joueur
      int c=0;
      int end=0;
      
     system("cls");
     for(i=0;i<n;i++){
-    printf("Joueur %d \n",(i+1));
-    c=aleaCarte(0,i);
-    c=c+aleaCarte(1,i);
+    printf("Joueur %d : %s\n", i+1, tab[i].nom);
+    c=aleaCarte(0,i,tab);
+    c=c+aleaCarte(1,i,tab);
     tab[i].count = c;
     printf ("\n\nTotal = %d",c);
     if(c == 21){
-        winBlack(i); 
+        winBlack(i,tab); 
         i=n;
         end=1;
     }  
@@ -139,7 +136,7 @@ int aleaCarte(int t,int j){
     return end ;
  }   
 
-void Beta(int n,bjack tab[(PLAYER)],int a){
+void Beta(int n,bjack tab[],int a){
       int i; // numéro joueur
      int c=0;
      int choix=0;
@@ -147,13 +144,13 @@ void Beta(int n,bjack tab[(PLAYER)],int a){
     
     for(i=0;i<n;i++){
     system("cls");
-    printf("Tour %d : \nJoueur %d \n",(a+2),(i+1));
+    printf("Tour %d : \nJoueur %d : %s\n",(a+2),(i+1),tab[i].nom);
     c = tab[i].count;
     printf ("\n\nTotal = %d",c);
     if(tab[i].done == 0){
     choix = choixCarte(i,tab);
     if(choix ==1){
-        c=c+aleaCarte(2+a,i);      
+        c=c+aleaCarte(2+a,i,tab);      
         tab[i].count = c;
     }
     
@@ -167,14 +164,13 @@ void Beta(int n,bjack tab[(PLAYER)],int a){
     }
 }
 
-   void winBlack(int n){
-      bjack tab[(PLAYER)];
+   void winBlack(int n,bjack tab[]){
       printf("\nBLACKJACK !\nC'est %s ,le joueur %d qui gagne",tab[(n+1)].nom,(n+1));
       tab[n].win = 1;
    }
 
 
-   int choixCarte(int i,bjack tab[PLAYER]){
+   int choixCarte(int i,bjack tab[]){
     int choix = 0 ;
     int a=0;
 
@@ -195,7 +191,7 @@ void Beta(int n,bjack tab[(PLAYER)],int a){
    }
 
      
-void bank(bjack tab[PLAYER]){ // La banque est le joueur n°10 (position 9 du tableau)
+void bank(bjack tab[]){ // La banque est le joueur n°10 
     int c=0;
     system("cls");
      c=c+aleaCarteBanque(0,9,c);
@@ -209,7 +205,7 @@ void bank(bjack tab[PLAYER]){ // La banque est le joueur n°10 (position 9 du ta
      if(c<17){
          c=c+aleaCarteBanque(4,9,c);
      }
-      tab[9].count = c;
+      tab[10].count = c;
      printf("\nLa valeur des cartes de la banque est de %d",c);
 }   
 
@@ -278,7 +274,7 @@ int aleaCarteBanque(int t,int j, int c2){
    
 
 
-int maxCard(int n,bjack tab[(PLAYER)]){
+int maxCard(int n,bjack tab[]){
     
     int maximum=0  ;
     int i=0;
@@ -293,17 +289,21 @@ int maxCard(int n,bjack tab[(PLAYER)]){
 }
 
 
-void compare(int max, int n,bjack tab[PLAYER]){
+void compare(int max, int n,bjack tab[]){
     int i=0;
+    int bank=0;
+    bank = tab[10].count;
     
-    if(max<=tab[10].count){ //la banque gagne
+    if(max<=bank){ //la banque gagne
         printf("\nC'est la banque qui gagne");
+        tab[10].win = 1;
         for(i=0;i<n;i++){
-         tab[i].win=1;   
+         tab[i].win = 2;   
         }
     }
-    
-    else if(max>tab[10].count){
+   
+    if(max>bank){ //un ou plusieurs joueurs sont plus proche de 21 que la banque
+        tab[10].win =2 ;
         for(i=0;i<n;i++){
             if(tab[i].count == max){
                 tab[i].win=1;
@@ -326,10 +326,15 @@ void compare(int max, int n,bjack tab[PLAYER]){
         else if(tab[10].win == 2){
             printf("\nBanque : perdante");
         }
+        else{
+            printf("Error");
+        }
 
     }
     
    }
+
+
 
 
 
