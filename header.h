@@ -28,24 +28,22 @@ extern "C" {
         int win;  // 0 = init
                   // 1 = gagné
                   // 2 = perdu
-        int quit; // 0 = continue
-                  // 1 = STOP 
        
     }bjack;
     
-    int intPlayer();
-    int aleaCarte(int,int);
+    int intPlayer(bjack tab[]);
+    int aleaCarte(int,int,bjack tab[]);
     int aleaCarteBanque(int,int,int);//(tour,joueur,total) 
     void affichage(carte);
     
  void attente();
-void winBlack(int); 
+void winBlack(int,bjack tab[]); 
  
 void jack();
  int choixAs();
 int Alpha(int, bjack tab[]);  
 void Beta(int, bjack tab[],int);
-void winBlack(int); 
+void winBlack(int,bjack tab[]); 
 int choixCarte(int, bjack tab[]);
  void bank(bjack tab[]);
  
@@ -59,13 +57,6 @@ void compare(int, int ,bjack tab[]);
 #endif
 
 #endif /* HEADER_H */
-
-
-
-
-
-
-
 
 
 
