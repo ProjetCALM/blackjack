@@ -25,6 +25,7 @@ int main(int argc, char** argv) {
 
 
 void jack(){
+   
      bjack b;
     int i,j=0;
     int end=0;
@@ -37,7 +38,10 @@ void jack(){
     srand(time(0));
     //aleaCarte(tour,joueur);
     
+    
+    
     bjack tab[(PLAYER)];
+    tab[10].count = 0;
     for(i=0;i<PLAYER;i++){
         tab[i].count = 0;
         tab[i].done = 0;
@@ -48,13 +52,12 @@ void jack(){
     }
     } 
    
-    n=intPlayer();
+    n=intPlayer(tab);
     
     end = Alpha(n, tab);    
     
     if (end==0){
         Beta(n, tab,0); //tour 2
-        
         Beta(n, tab,1); //tour 3
         Beta(n, tab,2); //tour 4
 }
@@ -63,15 +66,5 @@ void jack(){
     max = maxCard(n,tab);
     printf("\n\nLe plus gros score des joueurs est %d",max);
     compare(max,n,tab);
+    
 }
-
-
-void quitter(bjack tab[PLAYER]){
-    int a=0;
-    printf("\npour quitter : 0");
-    scanf("%d",&a);
-    if(a == 0){
-        
-    }
-}
-
