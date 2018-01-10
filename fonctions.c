@@ -325,6 +325,10 @@ void compare(int max, int n,bjack tab[]){
     int bank=0;
     bank = tab[10].count;
     
+ if(bank>21){
+        bank=0;
+    }
+ 
     if(max<=bank){ //la banque gagne
         printf("\nC'est la banque qui gagne");
         tab[10].win = 1;
