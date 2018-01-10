@@ -9,19 +9,37 @@
 
 int intPlayer(bjack tab[]){
     int n=0;//nombre de joueur
-    
-    printf("Nombre de joueurs : ");
+    int ia=0;
+    printf("Nombre de joueurs maximum : 5\nNombre de joueurs pour cette partie :");
     scanf("%d",&n);
-    
+    if(n>5){
+        n=5;
+    }
+//    
+//    printf("Voulez-vous rajouter des IAs ?\n1 : Non\n2 : Oui\n0 : Quitter\n");
+//    scanf("%d",&ia);
+//    if(ia == 2){
+//        ia = 3;
+//    printf("1 : Ajouter une IA\n2 : Ajouter deux IA\n0 : Annuler l'ajout d'IA\n");    
+//    while(ia != 0 && ia != 1 && ia != 2) {
+//    scanf("%d",&ia);   
+//    }
+//    }
+//    tab[0].stop = ia; // case inutilisée avant ça qui sert désormais a stocker le nombre d'ia
+//    
     int i,j=0;
     int compteur[10];
     char nom[NOM]="\0";
     
     
     for(i=0;i<n;i++){
-        printf("Entrez le nom du joueur %d : ",(i+1));
+        if(tab[10].stop == 0){
+        printf("Entrez le nom du joueur %d : \n ou 0 pour quitter\n",(i+1));
         scanf("%s",tab[i].nom);
-        
+        if(tab[i].nom == 0){
+            tab[10].stop = 1;
+        }
+        }
     }
     system("cls");
     
@@ -44,7 +62,7 @@ int aleaCarte(int t,int j,bjack tab[]){
     printf("\n");
     if(v==0){
         printf("As");
-        count = choixAs();
+        count = choixAs(tab);
      
  
     }
@@ -87,12 +105,12 @@ int aleaCarte(int t,int j,bjack tab[]){
     return(count);
 }
 
- int choixAs(){
+ int choixAs(bjack tab[]){
      int choix=0;
      int c=0;
-     printf("\nVous avez obtenu un as, choisissez la valeur qu'il prendra :\n1 ou 11\n");
+     printf("\nVous avez obtenu un as, choisissez la valeur qu'il prendra :\n1 ou 0 pour quitter\n 11\n");
      
-     while(choix != 1 && choix != 11){
+     while(choix != 1 && choix != 11 && choix != 0){
          scanf("%d",&choix);
          if(choix == 1){
              c = 1;
@@ -100,16 +118,21 @@ int aleaCarte(int t,int j,bjack tab[]){
          else if(choix == 11){
              c = 11;
          }
+         else if(choix == 0){
+             tab[10].stop = 1;
+         }
      }
      return c;
  }
- void attente(){
+ void attente(bjack tab[]){
      char var;
-     printf("\nEnter");
+     if(tab[10].stop == 0){
+     printf("\nEnter\n ");
      fflush(stdin);
-     while(var != '\n'&& var !='\r'){ var = getchar();}
+     while(var != '\n'&& var !='\r' ){ var = getchar();}
      var=0;
      
+ }
  }
 
  int Alpha(int n, bjack tab[]){
@@ -119,6 +142,7 @@ int aleaCarte(int t,int j,bjack tab[]){
      
     system("cls");
     for(i=0;i<n;i++){
+        if(tab[10].stop == 0){
     printf("Joueur %d : %s\n", i+1, tab[i].nom);
     c=aleaCarte(0,i,tab);
     c=c+aleaCarte(1,i,tab);
@@ -129,9 +153,10 @@ int aleaCarte(int t,int j,bjack tab[]){
         i=n;
         end=1;
     }  
-    attente();
+    attente(tab);
     
     system("cls");
+        }
     }
     return end ;
  }   
@@ -143,6 +168,7 @@ void Beta(int n,bjack tab[],int a){
     
     
     for(i=0;i<n;i++){
+        if(tab[10].stop == 0){
     system("cls");
     printf("Tour %d : \nJoueur %d : %s\n",(a+2),(i+1),tab[i].nom);
     c = tab[i].count;
@@ -159,25 +185,27 @@ void Beta(int n,bjack tab[],int a){
         printf("\nLe total est superieur a 21");
         tab[i].done = 1;
     }
-    attente();
-}
+    attente(tab);
+    }
+        }
     }
 }
 
    void winBlack(int n,bjack tab[]){
-      printf("\nBLACKJACK !\nC'est %s ,le joueur %d qui gagne",tab[(n+1)].nom,(n+1));
+      printf("\nBLACKJACK !\nC'est %s ,le joueur %d qui gagne",tab[(n)].nom,(n+1));
       tab[n].win = 1;
    }
 
 
    int choixCarte(int i,bjack tab[]){
-    int choix = 0 ;
+    int choix = 3 ;
     int a=0;
 
+    if(tab[10].stop == 0){
      if((tab[i].done) == 0){
-     printf("\n1: Tirer une carte\n2:Conserver le jeu actuel");
+     printf("\n1: Tirer une carte\n2:Conserver le jeu actuel\n ou 0 pour quitter\n");
      
-     while(choix != 1 && choix != 2){
+     while(choix != 1 && choix != 2 && choix != 0){
          scanf("%d",&choix);
          if(choix == 1){
             a=1;
@@ -185,9 +213,13 @@ void Beta(int n,bjack tab[],int a){
          else if(choix == 2){
         (tab[i].done)=1;
          }
+          else if(choix == 0){
+        (tab[10].stop)=1;
+         }
      }
      }
      return a;
+   }
    }
 
      
@@ -214,8 +246,7 @@ int aleaCarteBanque(int t,int j, int c2){
     int blazon=0;
     int v=0;
     int n=0;
-    bjack b;
-    carte c;
+
     bjack tab[PLAYER];
     int count=0;
     
@@ -333,6 +364,7 @@ void compare(int max, int n,bjack tab[]){
     }
     
    }
+
 
 
 
